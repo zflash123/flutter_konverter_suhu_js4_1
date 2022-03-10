@@ -43,10 +43,48 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
         body: Container(
           margin: const EdgeInsets.all(8),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Input(inputController: inputController),
-              Output(kelvin: _kelvin, reamur: _reamur),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                decoration: const InputDecoration(
+                  labelText: 'Celcius',
+                  hintText: 'Enter the temperature in celcius',
+                ),
+                controller: inputController,
+              ),
+              const SizedBox(height: 8),
+              DropdownButton(
+                isExpanded: true,
+                value: 'Fahrenheit',
+                items: [
+                  DropdownMenuItem(
+                    child: Text('Kelvin'),
+                    value: 'Kelvin',
+                  ),
+                  DropdownMenuItem(
+                    child: Text('Reamur'),
+                    value: 'Reamur',
+                  ),
+                  DropdownMenuItem(
+                    child: Text('Fahrenheit'),
+                    value: 'Fahrenheit',
+                  ),
+                ],
+                onChanged: (value) {},
+              ),
+              const Text(
+                'Hasil',
+                style: TextStyle(fontSize: 20),
+              ),
+              Text(
+                '365',
+                style: TextStyle(fontSize: 32),
+              ),
+              SizedBox(height: 10),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(50),
@@ -56,78 +94,15 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
                 },
                 child: const Text('Konversi Suhu'),
               ),
+              SizedBox(height: 10,),
+              const Text(
+                'Riwayat Konversi',
+                style: TextStyle(fontSize: 20),
+              ),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class Input extends StatelessWidget {
-  const Input({
-    Key? key,
-    required this.inputController,
-  }) : super(key: key);
-
-  final TextEditingController inputController;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      keyboardType: TextInputType.number,
-      inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.digitsOnly
-      ],
-      decoration: const InputDecoration(
-        labelText: 'Celcius',
-        hintText: 'Masukkan Suhu Dalam Celcius'
-      ),
-      controller: inputController,
-    );
-  }
-}
-
-class Output extends StatelessWidget {
-  const Output({
-    Key? key,
-    required double kelvin,
-    required double reamur,
-  })  : _kelvin = kelvin,
-        _reamur = reamur,
-        super(key: key);
-
-  final double _kelvin;
-  final double _reamur;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Column(
-          children: [
-            const Text('Suhu dalam Kelvin\n'),
-            Text(
-              '$_kelvin',
-              style: const TextStyle(
-                fontSize: 30,
-              ),
-            ),
-          ],
-        ),
-        Column(
-          children: [
-            const Text('Suhu dalam Reamur\n'),
-            Text(
-              '$_reamur',
-              style: const TextStyle(
-                fontSize: 30,
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }
