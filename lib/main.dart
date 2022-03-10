@@ -14,7 +14,7 @@ class KonvertSuhu extends StatefulWidget {
 
 class _KonvertSuhuState extends State<KonvertSuhu> {
   TextEditingController inputController = TextEditingController();
-
+  List<String> listSatuanSuhu = ['Kelvin', 'Reamur', 'Fahrenheit'];
   double _inputUser = 0;
   double _kelvin = 0;
   double _reamur = 0;
@@ -60,20 +60,12 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
               DropdownButton(
                 isExpanded: true,
                 value: 'Fahrenheit',
-                items: [
-                  DropdownMenuItem(
-                    child: Text('Kelvin'),
-                    value: 'Kelvin',
-                  ),
-                  DropdownMenuItem(
-                    child: Text('Reamur'),
-                    value: 'Reamur',
-                  ),
-                  DropdownMenuItem(
-                    child: Text('Fahrenheit'),
-                    value: 'Fahrenheit',
-                  ),
-                ],
+                items: listSatuanSuhu.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
                 onChanged: (value) {},
               ),
               const Text(
@@ -94,7 +86,9 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
                 },
                 child: const Text('Konversi Suhu'),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               const Text(
                 'Riwayat Konversi',
                 style: TextStyle(fontSize: 20),
