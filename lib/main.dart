@@ -18,6 +18,8 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
   double _inputUser = 0;
   double _kelvin = 0;
   double _reamur = 0;
+  String _newValue = "Kelvin";
+  double _result = 0;
 
   void convert() {
     setState(() {
@@ -59,14 +61,25 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
               const SizedBox(height: 8),
               DropdownButton(
                 isExpanded: true,
-                value: 'Fahrenheit',
+                value: _newValue,
                 items: listSatuanSuhu.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
                   );
                 }).toList(),
-                onChanged: (value) {},
+                onChanged: (yangDiklik) {
+                  setState(() {
+                    if (yangDiklik=="Fahrenheit") {
+                      _newValue = 'Fahrenheit';
+                    } else if(yangDiklik=="Kelvin") {
+                      _newValue = 'Kelvin';
+                    }
+                    else if(yangDiklik=="Reamur") {
+                      _newValue = 'Reamur';
+                    }
+                  });
+                },
               ),
               const Text(
                 'Hasil',
@@ -76,7 +89,7 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
                 '365',
                 style: TextStyle(fontSize: 32),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(50),
@@ -86,9 +99,7 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
                 },
                 child: const Text('Konversi Suhu'),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10,),
               const Text(
                 'Riwayat Konversi',
                 style: TextStyle(fontSize: 20),
