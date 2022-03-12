@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import '/widgets/InputanSuhu.dart';
+import '/widgets/TombolKonversi.dart';
 
 void main() {
   runApp(const KonvertSuhu());
@@ -15,17 +16,32 @@ class KonvertSuhu extends StatefulWidget {
 class _KonvertSuhuState extends State<KonvertSuhu> {
   TextEditingController inputController = TextEditingController();
   List<String> listSatuanSuhu = ['Kelvin', 'Reamur', 'Fahrenheit'];
+  List<String> listHasil = [];
   double _inputUser = 0;
   double _kelvin = 0;
   double _reamur = 0;
+  double _fahrenheit = 0;
   String _newValue = "Kelvin";
   double _result = 0;
 
   void convert() {
-    setState(() {
+    return setState(() {
       _inputUser = double.parse(inputController.text);
       _kelvin = _inputUser + 273.15;
       _reamur = (_inputUser * 4) / 5;
+      _fahrenheit = (9/5 * _inputUser) + 32;
+      
+      if (_newValue=="Fahrenheit") {
+        _result = _fahrenheit;
+      } else if(_newValue=="Kelvin") {
+        _result = _kelvin;
+      }
+      else if(_newValue=="Reamur") {
+        _result = _reamur;
+      }
+      listHasil.add(
+        "Konversi dari " + inputController.text + " Celcius ke " + _newValue + " Dengan Hasil : " + _result.toString()
+      );
     });
   }
 
@@ -47,17 +63,7 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              TextFormField(
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
-                decoration: const InputDecoration(
-                  labelText: 'Celcius',
-                  hintText: 'Enter the temperature in celcius',
-                ),
-                controller: inputController,
-              ),
+              InputanSuhu(inputController: inputController),
               const SizedBox(height: 8),
               DropdownButton(
                 isExpanded: true,
@@ -86,24 +92,25 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
                 style: TextStyle(fontSize: 20),
               ),
               Text(
-                '365',
+                '$_result',
                 style: TextStyle(fontSize: 32),
               ),
               const SizedBox(height: 10),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(50),
-                ),
-                onPressed: () {
-                  convert();
-                },
-                child: const Text('Konversi Suhu'),
+              TombolKonversi(
+                convert1: convert,
               ),
               const SizedBox(height: 10,),
               const Text(
                 'Riwayat Konversi',
                 style: TextStyle(fontSize: 20),
               ),
+              Expanded(
+                child: ListView.builder(
+                    itemCount: listHasil.length,
+                    itemBuilder: (context, index) {
+                      return Text(listHasil[index]);
+                    }),
+              )
             ],
           ),
         ),
@@ -111,3 +118,4 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
     );
   }
 }
+
