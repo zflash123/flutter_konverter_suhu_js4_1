@@ -3,7 +3,6 @@ import 'package:flutter_konverter_suhu/widgets/DropdownSuhu.dart';
 import 'package:flutter_konverter_suhu/widgets/HasilPerhitungan.dart';
 import 'package:flutter_konverter_suhu/widgets/RiwayatKonversi.dart';
 import '/widgets/InputanSuhu.dart';
-import '/widgets/TombolKonversi.dart';
 
 void main() {
   runApp(const KonvertSuhu());
@@ -36,6 +35,7 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
       } else if (yangDiklik == "Reamur") {
         _newValue = 'Reamur';
       }
+      convert();
     });
   }
   void convert() {
@@ -92,9 +92,6 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
               ),
               HasilPerhitungan(result: _result),
               const SizedBox(height: 10),
-              TombolKonversi(
-                convert1: convert,
-              ),
               const SizedBox(
                 height: 10,
               ),
@@ -113,4 +110,3 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
     );
   }
 }
-
