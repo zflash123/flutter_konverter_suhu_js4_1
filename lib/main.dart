@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_konverter_suhu/widgets/DropdownSuhu.dart';
+import 'package:flutter_konverter_suhu/widgets/HasilPerhitungan.dart';
+import 'package:flutter_konverter_suhu/widgets/RiwayatKonversi.dart';
 import '/widgets/InputanSuhu.dart';
 import '/widgets/TombolKonversi.dart';
 
@@ -23,25 +26,38 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
   double _fahrenheit = 0;
   String _newValue = "Kelvin";
   double _result = 0;
-
+  
+  void onDropdownChanged(String? yangDiklik){
+    setState(() {
+      if (yangDiklik == "Fahrenheit") {
+        _newValue = 'Fahrenheit';
+      } else if (yangDiklik == "Kelvin") {
+        _newValue = 'Kelvin';
+      } else if (yangDiklik == "Reamur") {
+        _newValue = 'Reamur';
+      }
+    });
+  }
   void convert() {
     return setState(() {
       _inputUser = double.parse(inputController.text);
       _kelvin = _inputUser + 273.15;
       _reamur = (_inputUser * 4) / 5;
-      _fahrenheit = (9/5 * _inputUser) + 32;
-      
-      if (_newValue=="Fahrenheit") {
+      _fahrenheit = (9 / 5 * _inputUser) + 32;
+
+      if (_newValue == "Fahrenheit") {
         _result = _fahrenheit;
-      } else if(_newValue=="Kelvin") {
+      } else if (_newValue == "Kelvin") {
         _result = _kelvin;
-      }
-      else if(_newValue=="Reamur") {
+      } else if (_newValue == "Reamur") {
         _result = _reamur;
       }
-      listHasil.add(
-        "Konversi dari " + inputController.text + " Celcius ke " + _newValue + " Dengan Hasil : " + _result.toString()
-      );
+      listHasil.add("Konversi dari " +
+          inputController.text +
+          " Celcius ke " +
+          _newValue +
+          ", dengan hasil : " +
+          _result.toString());
     });
   }
 
@@ -65,52 +81,31 @@ class _KonvertSuhuState extends State<KonvertSuhu> {
             children: [
               InputanSuhu(inputController: inputController),
               const SizedBox(height: 8),
-              DropdownButton(
-                isExpanded: true,
-                value: _newValue,
-                items: listSatuanSuhu.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (yangDiklik) {
-                  setState(() {
-                    if (yangDiklik=="Fahrenheit") {
-                      _newValue = 'Fahrenheit';
-                    } else if(yangDiklik=="Kelvin") {
-                      _newValue = 'Kelvin';
-                    }
-                    else if(yangDiklik=="Reamur") {
-                      _newValue = 'Reamur';
-                    }
-                  });
-                },
+              DropdownSuhu(
+                onDropdownChanged: onDropdownChanged,
+                newValue: _newValue, 
+                listSatuanSuhu: listSatuanSuhu
               ),
               const Text(
                 'Hasil',
                 style: TextStyle(fontSize: 20),
               ),
-              Text(
-                '$_result',
-                style: TextStyle(fontSize: 32),
-              ),
+              HasilPerhitungan(result: _result),
               const SizedBox(height: 10),
               TombolKonversi(
                 convert1: convert,
               ),
-              const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               const Text(
                 'Riwayat Konversi',
                 style: TextStyle(fontSize: 20),
               ),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: listHasil.length,
-                    itemBuilder: (context, index) {
-                      return Text(listHasil[index]);
-                    }),
-              )
+              const SizedBox(
+                height: 10,
+              ),
+              RiwayatKonversi(listHasil: listHasil)
             ],
           ),
         ),

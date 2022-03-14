@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class TombolKonversi extends StatelessWidget {
   
   const TombolKonversi( {
-    Key? key, required this.convert1,
+    Key? key, 
+    required this.convert1,
     
   }) : super(key: key);
   final Function convert1;
